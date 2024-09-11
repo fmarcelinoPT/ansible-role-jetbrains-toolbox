@@ -1,6 +1,7 @@
 ---
 # Installation Tasks
 - name: Ensure the installation directory exists
+  become: true
   file:
     path: "{{ toolbox_install_dir }}"
     state: directory
@@ -20,6 +21,7 @@
     remote_src: true
 
 - name: Create symlink for Toolbox
+  become: true
   file:
     src: "{{ toolbox_install_dir }}/jetbrains-toolbox"
     dest: "{{ toolbox_symlink_path }}"
@@ -27,6 +29,7 @@
 
 # Create a desktop shortcut for Toolbox
 - name: Create Toolbox desktop shortcut
+  become: true
   template:
     src: "toolbox.desktop.j2"
     dest: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
