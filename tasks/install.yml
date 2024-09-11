@@ -44,7 +44,7 @@
 # Copy toolbox logo for desktop shortcut
 - name: Copy toolbox logo for desktop shortcut
   become: true
-  template:
+  file:
     src: "toolbox.svg"
     dest: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ jetbrains_toolbox_version }}/jetbrains-toolbox.svg"
     mode: "0644"
