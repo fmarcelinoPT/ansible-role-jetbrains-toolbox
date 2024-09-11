@@ -5,7 +5,7 @@
   file:
     path: "{{ toolbox_install_dir }}"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Download JetBrains Toolbox
   get_url:
@@ -23,7 +23,7 @@
 - name: Create symlink for Toolbox
   become: true
   file:
-    src: "{{ toolbox_install_dir }}/jetbrains-toolbox"
+    src: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ rider_version }}/jetbrains-toolbox"
     dest: "{{ toolbox_symlink_path }}"
     state: link
 
@@ -33,4 +33,4 @@
   template:
     src: "toolbox.desktop.j2"
     dest: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
-    mode: '0644'
+    mode: "0644"
