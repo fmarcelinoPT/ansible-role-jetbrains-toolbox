@@ -44,10 +44,9 @@
 # Copy toolbox logo for desktop shortcut
 - name: Copy toolbox logo for desktop shortcut
   become: true
-  file:
+  ansible.builtin.copy:
     src: "toolbox.svg"
     dest: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ jetbrains_toolbox_version }}/jetbrains-toolbox.svg"
-    mode: "0644"
 
 # Create a desktop shortcut for Toolbox
 - name: Create Toolbox desktop shortcut
