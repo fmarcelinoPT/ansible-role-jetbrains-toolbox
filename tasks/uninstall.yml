@@ -1,0 +1,17 @@
+---
+# Uninstall Tasks
+- name: Remove the JetBrains Toolbox installation directory
+  file:
+    path: "{{ toolbox_install_dir }}"
+    state: absent
+
+- name: Remove the symlink to jetbrains-toolbox
+  file:
+    path: "{{ toolbox_symlink_path }}"
+    state: absent
+
+# Remove the Toolbox desktop shortcut
+- name: Remove Toolbox desktop shortcut
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
+    state: absent

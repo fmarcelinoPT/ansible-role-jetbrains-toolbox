@@ -1,0 +1,33 @@
+---
+# Installation Tasks
+- name: Ensure the installation directory exists
+  file:
+    path: "{{ toolbox_install_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Download JetBrains Toolbox
+  get_url:
+    url: "{{ toolbox_download_url }}"
+    dest: "/tmp/jetbrains_toolbox.tar.gz"
+    mode: "0644"
+
+- name: Extract JetBrains Toolbox
+  become: true
+  unarchive:
+    src: "/tmp/jetbrains_toolbox.tar.gz"
+    dest: "{{ toolbox_install_dir }}"
+    remote_src: true
+
+- name: Create symlink for Toolbox
+  file:
+    src: "{{ toolbox_install_dir }}/jetbrains-toolbox"
+    dest: "{{ toolbox_symlink_path }}"
+    state: link
+
+# Create a desktop shortcut for Toolbox
+- name: Create Toolbox desktop shortcut
+  template:
+    src: "toolbox.desktop.j2"
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
+    mode: '0644'
