@@ -23,7 +23,7 @@
 - name: Create symlink for Toolbox
   become: true
   file:
-    src: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ rider_version }}/jetbrains-toolbox"
+    src: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ toolbox_version }}/jetbrains-toolbox"
     dest: "{{ toolbox_symlink_path }}"
     state: link
 
