@@ -1,0 +1,4 @@
+---
+# tasks file for jetbrains-toolbox
+- name: Install or Revert JetBrains Toolbox based on user action
+  include_tasks: "{{ toolbox_action }}.yml"

@@ -1,0 +1,57 @@
+---
+# Installation Tasks
+- name: Check if the installation directory exists
+  ansible.builtin.stat:
+    path: "{{ toolbox_install_dir }}"
+  register: toolbox_folder_status
+
+- name: Install JetBrains Toolbox
+  block:
+    - name: Find all versions of JetBrains Toolbox
+      ansible.builtin.uri:
+        url: https://data.services.jetbrains.com/products/releases?code=TBA&type=release
+        return_content: yes
+      register: jetbrains_index
+      check_mode: no
+    - name: Finds the latest version of JetBrains Toolbox
+      ansible.builtin.set_fact:
+        jetbrains_toolbox_version: "{{ (jetbrains_index.content | from_json).TBA | map(attribute='build') | list | sort_versions | last }}"
+    # - debug:
+    #     msg: "{{ jetbrains_toolbox_version }}"
+    - name: Ensure the installation directory exists
+      become: true
+      file:
+        path: "{{ toolbox_install_dir }}"
+        state: directory
+        mode: "0755"
+    - name: Download JetBrains Toolbox
+      get_url:
+        url: "{{ toolbox_download_url }}"
+        dest: "/tmp/jetbrains_toolbox.tar.gz"
+        mode: "0644"
+    - name: Extract JetBrains Toolbox
+      become: true
+      unarchive:
+        src: "/tmp/jetbrains_toolbox.tar.gz"
+        dest: "{{ toolbox_install_dir }}"
+        remote_src: true
+    - name: Create symlink for Toolbox
+      become: true
+      file:
+        src: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ jetbrains_toolbox_version }}/jetbrains-toolbox"
+        dest: "{{ toolbox_symlink_path }}"
+        state: link
+    # Copy toolbox logo for desktop shortcut
+    - name: Copy toolbox logo for desktop shortcut
+      become: true
+      ansible.builtin.copy:
+        src: "toolbox.svg"
+        dest: "{{ toolbox_install_dir }}/jetbrains-toolbox-{{ jetbrains_toolbox_version }}/jetbrains-toolbox.svg"
+    # Create a desktop shortcut for Toolbox
+    - name: Create Toolbox desktop shortcut
+      become: true
+      template:
+        src: "toolbox.desktop.j2"
+        dest: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
+        mode: "0644"
+  when: "toolbox_action == 'install' and not toolbox_folder_status.stat.exists"

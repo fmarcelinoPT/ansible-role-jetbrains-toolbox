@@ -1,0 +1,26 @@
+---
+# Uninstall Tasks
+- name: Check if the installation directory exists
+  ansible.builtin.stat:
+    path: "{{ toolbox_install_dir }}"
+  register: toolbox_folder
+
+- name: Uninstall JetBrains Toolbox
+  block:
+    - name: Remove the JetBrains Toolbox installation directory
+      become: true
+      file:
+        path: "{{ toolbox_install_dir }}"
+        state: absent
+    - name: Remove the symlink to jetbrains-toolbox
+      become: true
+      file:
+        path: "{{ toolbox_symlink_path }}"
+        state: absent
+    # Remove the Toolbox desktop shortcut
+    - name: Remove Toolbox desktop shortcut
+      become: true
+      file:
+        path: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
+        state: absent
+  when: "toolbox_action == 'uninstall' and toolbox_folder.stat.exists"
