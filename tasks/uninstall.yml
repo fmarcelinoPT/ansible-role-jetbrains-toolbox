@@ -1,5 +1,10 @@
 ---
 # Uninstall Tasks
+- name: Check if the installation directory exists
+  ansible.builtin.stat:
+    path: "{{ rider_install_dir }}"
+  register: toolbox_folder
+
 - name: Uninstall JetBrains Toolbox
   block:
     - name: Remove the JetBrains Toolbox installation directory
@@ -18,4 +23,4 @@
       file:
         path: "{{ ansible_env.HOME }}/.local/share/applications/toolbox.desktop"
         state: absent
-  when: "toolbox_action == 'uninstall' and toolbox_folder_status.stat.exists"
+  when: "toolbox_action == 'uninstall' and toolbox_folder.stat.exists"
