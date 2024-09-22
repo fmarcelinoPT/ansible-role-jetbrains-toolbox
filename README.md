@@ -76,15 +76,15 @@ To uninstall JetBrains Toolbox, run:
 ansible-playbook -i inventory playbook.yml --extra-vars "toolbox_action=uninstall"
 ```
 
-## License
-
-MIT
-
-## Author Information
-
-This role was created at 2024 by [fmarcelinoPT](https://github.com/fmarcelinoPT). Feel free to customize or extend the role to fit your needs.
-
 ## Usage
 
 - Install: This playbook will download the latest version of JetBrains Toolbox, extract it to the specified directory, create a symlink, and create a desktop shortcut.
 - Uninstall: This playbook will remove the installed JetBrains Toolbox directory, symlink, and desktop shortcut.
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Author Information
+
+This role was created at 2024 by [fmarcelinoPT](https://github.com/fmarcelinoPT). Feel free to customize or extend the role to fit your needs.
