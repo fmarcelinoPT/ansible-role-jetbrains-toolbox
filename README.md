@@ -9,7 +9,7 @@ This Ansible role installs or uninstalls JetBrains Toolbox, a tool for managing 
 ## Requirements
 
 - Ansible version: 2.9 or higher.
-- Root privileges (using become: yes), as installation happens in system directories such as /opt/jetbrains-toolbox and symlinks are created in /usr/local/bin.
+- Root privileges (using `become: true`), as installation happens in system directories such as /opt/jetbrains-toolbox and symlinks are created in /usr/local/bin.
 - Internet access on the managed machine to download JetBrains Toolbox from JetBrains' website.
 
 ### Role Variables
@@ -43,7 +43,7 @@ None.
 ```yaml
 ---
 - hosts: dev-machines
-  become: yes
+  become: true
   roles:
     - role: jetbrains_toolbox
       vars:
@@ -55,7 +55,7 @@ None.
 ```yaml
 ---
 - hosts: dev-machines
-  become: yes
+  become: true
   roles:
     - role: jetbrains_toolbox
       vars:
